@@ -243,6 +243,8 @@ void	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order)
 	if (order->type == 'p' || (order->hash && base == 16))
 		print_prefix(order);
 	numstr = add_precision(numstr, num_len, order);
+	if (num == 0)
+		numstr[--figure_len] = '0';
 	while (num)
 	{
 		if (order->type == 'X')
@@ -361,11 +363,11 @@ void	print_s_conversion(int num, int figure_len, t_order *order)
 		return ;
 	write_len = figure_len;
 	num_len = count_dec_digit(num);
-	if (num == 0)
-		numstr[0] = '0';
 	if (num < 0 || order->plus || order->spc)
 		print_sign_or_spc(num, order);
 	numstr = add_precision(numstr, num_len, order);
+	if (num == 0)
+		numstr[--figure_len] = '0';
 	if (num < 0)
 	{
 		numstr[--figure_len] = num % 10 * (-1) + '0';
