@@ -229,20 +229,18 @@ char	*add_precision(char *numstr, int num_len, t_order *order)
 	return (numstr);
 }
 
-void	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order) //unsigned int  cast?
+int	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order) //unsigned int  cast?
 {
 	char *numstr;
-	int num_len;
 	int write_len;
 	
 	numstr = reserve_mem(&figure_len, order);
 	if (!numstr)
-		return ;
+		return (-1);
 	write_len = figure_len;
-	num_len = count_u_digit(num, base);
 	if (order->type == 'p' || (order->hash && base == 16))
 		print_prefix(order);
-	numstr = add_precision(numstr, num_len, order);
+	numstr = add_precision(numstr, figure_len - order->precision, order);
 	if (num == 0)
 		numstr[--figure_len] = '0';
 	while (num)
@@ -255,6 +253,7 @@ void	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order)
 	}
 	write(1, numstr, write_len);
 	free(numstr);
+	return (0);
 }
 
 int print_preci_and_arg_zero(int counted, int print_len, t_order *order) //int figure_len
@@ -299,7 +298,7 @@ int print_unsigned(size_t num, int counted, int base, t_order *order)
 {
 	int figure_len;
 	int print_len;
-					//ft_u_numlen
+
 	figure_len = count_u_digit(num, base);
 	while (figure_len < order->precision)
 		figure_len++;
@@ -307,7 +306,7 @@ int print_unsigned(size_t num, int counted, int base, t_order *order)
 	if (counted + print_len >= INT_MAX)
 		return (-1);
 	if (num == 0 && order->precision == 0)
-		return (print_preci_and_arg_zero(counted, print_len, order)); //figure_len
+		return (print_preci_and_arg_zero(counted, print_len, order));
 	if (order->hash || order->type == 'p')
 		order->width -= 2;
 	if (!order->left && !order->zero)
@@ -315,7 +314,8 @@ int print_unsigned(size_t num, int counted, int base, t_order *order)
 		while (figure_len < order->width--)
 			write(1, " ", 1);	
 	}
-	print_u_conversion(num, base, figure_len, order);
+	if (print_u_conversion(num, base, figure_len, order) == -1)
+		return (-1);
 	while (figure_len < order->width--)
 		write(1, " ", 1);
 	return (counted + print_len);
@@ -328,9 +328,7 @@ int count_dec_digit(int num)
 
 	count = 1;
 	if (num < 0)
-	{
 		n = -(num + 1) + 1u;
-	}
 	else
 		n = num;
 	while (n > 9)
@@ -351,56 +349,34 @@ void	print_sign_or_spc(int num, t_order *order)
 		write(1, " ", 1);
 }
 
-void	print_s_conversion(int num, int figure_len, t_order *order)
+int	print_s_conversion(int num, int figure_len, t_order *order)
 {
-	char	*numstr;
-	int		num_len;
-	int		write_len;
-	//unsigned int n;
+	char			*numstr;
+	int				write_len;
+	unsigned int	n;
 	
 	numstr = reserve_mem(&figure_len, order);
 	if (!numstr)
-		return ;
+		return (-1);
 	write_len = figure_len;
-	num_len = count_dec_digit(num);
 	if (num < 0 || order->plus || order->spc)
 		print_sign_or_spc(num, order);
-	numstr = add_precision(numstr, num_len, order);
+	numstr = add_precision(numstr, figure_len - order->precision, order);
 	if (num == 0)
 		numstr[--figure_len] = '0';
 	if (num < 0)
+		n = -(num + 1) + 1u;
+	else
+		n = num;
+	while (n)
 	{
-		numstr[--figure_len] = num % 10 * (-1) + '0';
-		num = num / 10 * (-1);
-	}
-	while (num)
-	{
-		numstr[--figure_len] = (num % 10) + '0';
-		num = num / 10;
+		numstr[--figure_len] = "0123456789"[n % 10];
+		n = n / 10;
 	}
 	write(1, numstr, write_len);
 	free(numstr);
+	return (0);
 }
-
-/*int	sign_preci_and_arg_zero(int counted, int print_len, t_order *order)
-{
-	if (order->plus || order->spc)
-	{
-		order->width -= 1;
-		if (!order->left)
-		{
-			while (order->width-- > 0)
-				write(1, " ", 1);
-		}
-		if (order->plus)
-			write(1, "+", 1);
-		else
-			write(1, " ", 1);
-	}		
-	while (order->width-- > 0)
-		write(1, " ", 1);
-	return (counted);
-}*/
 
 int	singed_will_print_len(int figure_len, int num, t_order *order)
 {
@@ -427,14 +403,15 @@ int	print_signed(int num, int counted, t_order *order)
 		return (-1);
 	if (num == 0 && order->precision == 0)
 		return (print_preci_and_arg_zero(counted, print_len, order));
-		order->width--;
 	if (order->plus || order->spc || num < 0)
+		order->width--;
 	if (!order->left && !order->zero)
 	{
 		while (figure_len < order->width--)
 			write(1, " ", 1);
 	}
-	print_s_conversion(num, figure_len, order);
+	if (print_s_conversion(num, figure_len, order) == -1)
+		return (-1);
 	while (figure_len < order->width--)
 		write(1, " ", 1);
 	return (counted + print_len);
