@@ -17,15 +17,13 @@ typedef struct	s_order
 	char	type;
 }	t_order;
 
-int ft_strnlen(const char *str, size_t n)
+size_t	ft_strnlen(const char *str, size_t n)
 {
 	size_t i;
 
 	i = 0;
 	while (i < n && str[i] != '\0')
 		i++;
-	if (i >= INT_MAX)
-		i = -1;
 	return (i);
 }
 
@@ -159,8 +157,8 @@ int print_char(char c, int counted, t_order *order)
 
 int print_str(const char *str, int counted, t_order *order)
 {
-	int printable_len;
-	int printed_len;	
+	size_t	printable_len;
+	size_t	printed_len;	
 
 	if (!str)
 		str = "(null)"; // const  rewrite?
@@ -168,15 +166,15 @@ int print_str(const char *str, int counted, t_order *order)
 	printed_len = printable_len;
 	while (printed_len < order->width)
 		printed_len++;
-	if (printable_len < 0 || printed_len + counted >= INT_MAX)
+	if (printed_len + counted >= INT_MAX)
 		return (-1);
 	if (!order->left)
 	{
-		while (printable_len < order->width--)
+		while (order->width && printable_len < order->width--)
 			write(1, " ", 1);
 	}
 	ft_putnstr(str, printable_len);
-	while (printable_len < order->width--)
+	while (order->width && printable_len < order->width--)
 		write(1, " ", 1);
 	return (counted + printed_len);
 }
@@ -398,7 +396,7 @@ int	print_signed(int num, int counted, t_order *order)
 	figure_len = count_dec_digit(num);
 	while (figure_len < order->precision)
 		figure_len++;
-	print_len = singed_will_print_len(figure_len, num, order);	
+	print_len = singed_will_print_len(figure_len, num, order);
 	if (counted + print_len >= INT_MAX)
 		return (-1);
 	if (num == 0 && order->precision == 0)
