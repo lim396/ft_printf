@@ -164,22 +164,22 @@ int print_str(const char *str, int counted, t_order *order)
 		str = "(null)"; // const  rewrite?
 	printable_len = ft_strnlen(str, order->precision);
 	printed_len = printable_len;
-	while (printed_len < order->width)
+	while (printed_len < (size_t)order->width)
 		printed_len++;
 	if (printed_len + counted >= INT_MAX)
 		return (-1);
 	if (!order->left)
 	{
-		while (order->width && printable_len < order->width--)
+		while ((int)printable_len < order->width--)
 			write(1, " ", 1);
 	}
 	ft_putnstr(str, printable_len);
-	while (order->width && printable_len < order->width--)
+	while ((int)printable_len < order->width--)
 		write(1, " ", 1);
-	return (counted + printed_len);
+	return (counted + (int)printed_len);
 }
 
-int count_u_digit(size_t num, size_t base)
+int count_digit(size_t num, size_t base)
 {
 	int count;
 
@@ -227,7 +227,7 @@ char	*add_precision(char *numstr, int num_len, t_order *order)
 	return (numstr);
 }
 
-int	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order) //unsigned int  cast?
+int	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order)
 {
 	char *numstr;
 	int write_len;
@@ -254,7 +254,7 @@ int	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order) 
 	return (0);
 }
 
-int print_preci_and_arg_zero(int counted, int print_len, t_order *order) //int figure_len
+int print_preci_and_arg_zero(int counted, int print_len, t_order *order)
 {
 	if (order->type == 'p' || order->plus || order->spc)
 	{
@@ -297,7 +297,7 @@ int print_unsigned(size_t num, int counted, int base, t_order *order)
 	int figure_len;
 	int print_len;
 
-	figure_len = count_u_digit(num, base);
+	figure_len = count_digit(num, base);
 	while (figure_len < order->precision)
 		figure_len++;
 	print_len = unsigned_will_print_len(figure_len, order);
@@ -317,24 +317,6 @@ int print_unsigned(size_t num, int counted, int base, t_order *order)
 	while (figure_len < order->width--)
 		write(1, " ", 1);
 	return (counted + print_len);
-}
-
-int count_dec_digit(int num)
-{
-	int count;
-	unsigned int	n;
-
-	count = 1;
-	if (num < 0)
-		n = -(num + 1) + 1u;
-	else
-		n = num;
-	while (n > 9)
-	{
-		n = n / 10;
-		count++;
-	}
-	return (count);
 }
 
 void	print_sign_or_spc(int num, t_order *order)
@@ -388,12 +370,19 @@ int	singed_will_print_len(int figure_len, int num, t_order *order)
 	return (print_len);
 }
 
+size_t	ft_abs(long long num)
+{
+	if (num < 0)
+		return -(num + 1) + 1u;
+	return (num);
+}
+
 int	print_signed(int num, int counted, t_order *order)
 {
 	int figure_len;
 	int print_len;
 
-	figure_len = count_dec_digit(num);
+	figure_len = count_digit(ft_abs(num), 10);
 	while (figure_len < order->precision)
 		figure_len++;
 	print_len = singed_will_print_len(figure_len, num, order);
@@ -446,23 +435,20 @@ int ft_vsprintf(const char *fmt, va_list args)
 	{
 		while (fmt[i] != '%' && fmt[i] != '\0')
 		{
-			if (counted == INT_MAX - 1) //cut func ??
+			if (counted == INT_MAX - 1)
 				return (-1);
 			write(1, &fmt[i++], 1);
 			counted++;
-			//continue ;
 		}
 		if (fmt[i] == '\0')
 			break ;	
 		order = init_order();
-		//structure initialize
 		i = parse(fmt, i + 1, args, &order);
 		if (order.width == INT_MAX || order.precision == INT_MAX)
 			return (-1);
-		//printed_count += conversion_print();
 		counted = conversion_print(fmt[i], counted, args, &order);
 		if (counted < 0)
-			break ; //return (-1);
+			return (-1);
 		i++;
 	}
 	return (counted);
