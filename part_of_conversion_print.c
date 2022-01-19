@@ -56,7 +56,7 @@ int print_unsigned(size_t num, int counted, int base, t_order *order)
 	if (counted + print_len >= INT_MAX)
 		return (-1);
 	if (num == 0 && order->precision == 0)
-		return (print_preci_and_arg_zero(counted, print_len, order));
+		return (print_prefix_or_sign(counted, print_len, order));
 	if (order->hash || order->type == 'p')
 		order->width -= 2;
 	if (!order->left && !order->zero)
@@ -83,7 +83,7 @@ int	print_signed(int num, int counted, t_order *order)
 	if (counted + print_len >= INT_MAX)
 		return (-1);
 	if (num == 0 && order->precision == 0)
-		return (print_preci_and_arg_zero(counted, print_len, order));
+		return (print_prefix_or_sign(counted, print_len, order));
 	if (order->plus || order->spc || num < 0)
 		order->width--;
 	if (!order->left && !order->zero)

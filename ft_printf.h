@@ -36,7 +36,7 @@ int parse_width(const char *fmt, size_t i, va_list args, t_order *order);
 int	parse_precision(const char *fmt, size_t i, va_list args, t_order *order);
 
 int count_digit(size_t num, size_t base);
-int print_preci_and_arg_zero(int counted, int print_len, t_order *order);
+int print_prefix_or_sign(int counted, int print_len, t_order *order);
 int	print_s_conversion(int num, int figure_len, t_order *order);
 int	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order);
 int	singed_will_print_len(int figure_len, int num, t_order *order);

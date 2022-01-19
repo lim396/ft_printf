@@ -13,7 +13,7 @@ int count_digit(size_t num, size_t base)
 	return (count);
 }
 
-int print_preci_and_arg_zero(int counted, int print_len, t_order *order)
+int print_prefix_or_sign(int counted, int print_len, t_order *order)
 {
 	if (order->type == 'p' || order->plus || order->spc)
 	{
