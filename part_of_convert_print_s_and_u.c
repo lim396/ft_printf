@@ -15,14 +15,14 @@ char	*reserve_mem(int *figure_len, t_order *order)
 	return (numstr);
 }
 
-char	*add_precision(char *numstr, int num_len, t_order *order)
+char	*add_precision(char *numstr, t_order *order)
 {
 	int	i;
 
 	i = 0;
-	while (order->zero && num_len < order->width--)
+	while (order->zero && order->width-- > 0)
 		numstr[i++] = '0';
-	while (num_len < order->precision--)
+	while (order->precision-- > 0)
 		numstr[i++] = '0';
 	return (numstr);
 }

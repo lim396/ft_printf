@@ -11,7 +11,7 @@ int	convert_print_u(size_t n, size_t base, int figure_len, t_order *order)
 	write_len = figure_len;
 	if (order->type == 'p' || (order->hash && base == 16))
 		print_prefix(order);
-	numstr = add_precision(numstr, figure_len - order->precision, order);
+	numstr = add_precision(numstr, order);
 	if (n == 0)
 		numstr[--figure_len] = '0';
 	while (n)

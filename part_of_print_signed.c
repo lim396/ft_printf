@@ -12,7 +12,7 @@ int	convert_print_s(int n, int figure_len, t_order *order)
 	write_len = figure_len;
 	if (n < 0 || order->plus || order->spc)
 		print_sign_or_spc(n, order);
-	numstr = add_precision(numstr, figure_len - order->precision, order);
+	numstr = add_precision(numstr, order);
 	if (n == 0)
 		numstr[--figure_len] = '0';
 	if (n < 0)

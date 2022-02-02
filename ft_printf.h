@@ -56,7 +56,7 @@ int		unsigned_will_print_len(int figure_len, t_order *order);
 size_t	ft_abs(long long n);
 
 char	*reserve_mem(int *figure_len, t_order *order);
-char	*add_precision(char *numstr, int num_len, t_order *order);
+char	*add_precision(char *numstr, t_order *order);
 void	print_sign_or_spc(int n, t_order *order);
 void	print_prefix(t_order *order);
 
