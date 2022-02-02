@@ -52,7 +52,7 @@ int		print_prefix_or_sign(int counted, int print_len, t_order *order);
 int		convert_print_s(int n, int figure_len, t_order *order);
 int		convert_print_u(size_t n, size_t base, int figure_len, t_order *order);
 int		singed_will_print_len(int figure_len, int n, t_order *order);
-int		unsigned_will_print_len(int figure_len, t_order *order);
+int		unsigned_will_print_len(int figure_len, size_t n, t_order *order);
 size_t	ft_abs(long long n);
 
 char	*reserve_mem(int *figure_len, t_order *order);

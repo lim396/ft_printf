@@ -52,7 +52,7 @@ int	print_unsigned(size_t n, int count, int base, t_order *order)
 	figure_len = count_digit(n, base);
 	while (figure_len < order->precision)
 		figure_len++;
-	print_len = unsigned_will_print_len(figure_len, order);
+	print_len = unsigned_will_print_len(figure_len, n, order);
 	if (count + print_len >= INT_MAX)
 		return (-1);
 	if (n == 0 && order->precision == 0)

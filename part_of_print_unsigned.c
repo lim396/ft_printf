@@ -9,7 +9,7 @@ int	convert_print_u(size_t n, size_t base, int figure_len, t_order *order)
 	if (!numstr)
 		return (-1);
 	write_len = figure_len;
-	if (order->type == 'p' || (order->hash && base == 16))
+	if (order->type == 'p' || (order->hash && base == 16 && n != 0))
 		print_prefix(order);
 	numstr = add_precision(numstr, order);
 	if (n == 0)
@@ -27,12 +27,12 @@ int	convert_print_u(size_t n, size_t base, int figure_len, t_order *order)
 	return (0);
 }
 
-int	unsigned_will_print_len(int figure_len, t_order *order)
+int	unsigned_will_print_len(int figure_len, size_t n, t_order *order)
 {
 	int	print_len;
 
 	print_len = figure_len;
-	if (order->hash || order->type == 'p')
+	if ((order->hash && n != 0) || order->type == 'p')
 		print_len += 2;
 	while (print_len < order->width)
 		print_len++;
