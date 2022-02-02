@@ -1,19 +1,19 @@
 #include "ft_printf.h"
 
-int count_digit(size_t num, size_t base)
+int	count_digit(size_t n, size_t base)
 {
-	int count;
+	int	count;
 
 	count = 1;
-	while (num > base - 1)
+	while (n > base - 1)
 	{
-		num = num / base;
+		n = n / base;
 		count++;
 	}
 	return (count);
 }
 
-int print_prefix_or_sign(int counted, int print_len, t_order *order)
+int	print_prefix_or_sign(int counted, int print_len, t_order *order)
 {
 	if (order->type == 'p' || order->plus || order->spc)
 	{

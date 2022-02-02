@@ -1,10 +1,10 @@
 #include "ft_printf.h"
 
-int	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order)
+int	convert_print_u(size_t n, size_t base, int figure_len, t_order *order)
 {
-	char *numstr;
-	int write_len;
-	
+	char	*numstr;
+	int		write_len;
+
 	numstr = reserve_mem(&figure_len, order);
 	if (!numstr)
 		return (-1);
@@ -12,15 +12,15 @@ int	print_u_conversion(size_t num, size_t base, int figure_len, t_order *order)
 	if (order->type == 'p' || (order->hash && base == 16))
 		print_prefix(order);
 	numstr = add_precision(numstr, figure_len - order->precision, order);
-	if (num == 0)
+	if (n == 0)
 		numstr[--figure_len] = '0';
-	while (num)
+	while (n)
 	{
 		if (order->type == 'X')
-			numstr[--figure_len] = "0123456789ABCDEF"[num % base];
+			numstr[--figure_len] = "0123456789ABCDEF"[n % base];
 		else
-			numstr[--figure_len] = "0123456789abcdef"[num % base];
-		num = num / base;
+			numstr[--figure_len] = "0123456789abcdef"[n % base];
+		n = n / base;
 	}
 	write(1, numstr, write_len);
 	free(numstr);

@@ -1,8 +1,17 @@
 #include "ft_printf.h"
 
+t_order	init_order(void)
+{
+	t_order	order;
+
+	memset(&order, 0, sizeof(t_order)); //ft_memset
+	order.precision = -1;
+	return (order);
+}
+
 int	parse_flags(const char *fmt, size_t i, t_order *order)
 {
-	while(fmt[i] == '-' || fmt[i] == '0' || fmt[i] == '+' || fmt[i] == ' '
+	while (fmt[i] == '-' || fmt[i] == '0' || fmt[i] == '+' || fmt[i] == ' '
 		|| fmt[i] == '#') //fmt[i] && strchr("-0+ #", fmt[i])
 	{
 		if (fmt[i] == '-')
@@ -26,7 +35,7 @@ int	parse_flags(const char *fmt, size_t i, t_order *order)
 	return (i);
 }
 
-int parse_width(const char *fmt, size_t i, va_list args, t_order *order)
+int	parse_width(const char *fmt, size_t i, va_list args, t_order *order)
 {
 	while (isdigit(fmt[i])) //ft_isdigit
 	{
