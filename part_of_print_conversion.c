@@ -5,7 +5,7 @@ int	print_char(char c, int count, t_order *order)
 	int	printed_len;
 
 	printed_len = 1;
-	if (printed_len < order->width)
+	while (printed_len < order->width)
 		printed_len++;
 	if (count + printed_len >= INT_MAX)
 		return (-1);
