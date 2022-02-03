@@ -4,15 +4,14 @@ t_order	init_order(void)
 {
 	t_order	order;
 
-	memset(&order, 0, sizeof(t_order)); //ft_memset
+	ft_memset(&order, 0, sizeof(t_order));
 	order.precision = -1;
 	return (order);
 }
 
 int	parse_flags(const char *fmt, size_t i, t_order *order)
 {
-	while (fmt[i] == '-' || fmt[i] == '0' || fmt[i] == '+' || fmt[i] == ' '
-		|| fmt[i] == '#') //fmt[i] && strchr("-0+ #", fmt[i])
+	while (fmt[i] && strchr("-0+ #", fmt[i]))
 	{
 		if (fmt[i] == '-')
 		{
@@ -37,7 +36,7 @@ int	parse_flags(const char *fmt, size_t i, t_order *order)
 
 int	parse_width(const char *fmt, size_t i, va_list args, t_order *order)
 {
-	while (isdigit(fmt[i])) //ft_isdigit
+	while (ft_isdigit(fmt[i]))
 	{
 		if (order->width > (INT_MAX - (fmt[i] - '0')) / 10)
 		{
@@ -67,7 +66,7 @@ int	parse_precision(const char *fmt, size_t i, va_list args, t_order *order)
 	i++;
 	order->zero = 0;
 	order->precision = 0;
-	while (isdigit(fmt[i])) //ft_isdigit
+	while (ft_isdigit(fmt[i]))
 	{
 		if (order->precision > (INT_MAX - (fmt[i] - '0')) / 10)
 		{

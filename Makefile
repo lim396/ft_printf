@@ -7,14 +7,14 @@ OBJS=$(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make $(CFLAGS) -C ./libft
-	cp ./libft/libft.a ./$(NAME)
+	$(MAKE) $(CFLAGS) -C ./libft
+	cp libft/libft.a $(NAME)
 	ar rc $(NAME) $(OBJS)
 
-bonus: all
-
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -c $< -o $@
+
+bonus: all
 
 clean:
 	make clean -C ./libft

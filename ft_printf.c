@@ -17,7 +17,7 @@ int	print_ordinary_char(const char *fmt, size_t i, int *count)
 
 size_t	parse(const char *fmt, size_t i, va_list ap, t_order *order)
 {
-	if (fmt[i] && strchr("-0 +#", fmt[i])) //ft_strchr
+	if (fmt[i] && ft_strchr("-0 +#", fmt[i]))
 		i = parse_flags(fmt, i, order);
 	if (('1' <= fmt[i] && fmt[i] <= '9') || fmt[i] == '*')
 		i = parse_width(fmt, i, ap, order);
