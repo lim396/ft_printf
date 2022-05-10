@@ -11,7 +11,7 @@ t_order	init_order(void)
 
 int	parse_flags(const char *fmt, size_t i, t_order *order)
 {
-	while (fmt[i] && strchr("-0+ #", fmt[i]))
+	while (fmt[i] && ft_strchr("-0+ #", fmt[i]))
 	{
 		if (fmt[i] == '-')
 		{

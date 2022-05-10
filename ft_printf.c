@@ -23,7 +23,7 @@ size_t	parse(const char *fmt, size_t i, va_list ap, t_order *order)
 		i = parse_width(fmt, i, ap, order);
 	if (fmt[i] == '.')
 		i = parse_precision(fmt, i, ap, order);
-	if (fmt[i] && strchr("diuxXp", fmt[i]))
+	if (fmt[i] && ft_strchr("diuxXp", fmt[i]))
 		order->type = fmt[i];
 	return (i);
 }
