@@ -1,7 +1,16 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror
 NAME=libftprintf.a
-SRCS=$(wildcard *.c)
+SRCS=ft_printf.c \
+	 part_of_parse.c \
+	 part_of_print_conversion.c \
+	 part_of_print_signed.c \
+	 part_of_print_unsigned.c \
+	 part_of_print_str.c \
+	 part_of_print_signed_and_unsigned.c \
+	 part_of_print_str.c \
+	 part_of_convert_print_s_and_u.c \
+
 OBJS=$(SRCS:.c=.o)
 
 all: $(NAME)
