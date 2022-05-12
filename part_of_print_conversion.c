@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   part_of_print_conversion.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: shongou <shongou@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/12 11:59:06 by shongou           #+#    #+#             */
+/*   Updated: 2022/05/12 11:59:08 by shongou          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int	print_char(char c, int count, t_order *order)
@@ -23,7 +35,7 @@ int	print_char(char c, int count, t_order *order)
 int	print_str(const char *str, int count, t_order *order)
 {
 	size_t	printable_len;
-	size_t	printed_len;	
+	size_t	printed_len;
 
 	if (!str)
 		str = "(null)";
